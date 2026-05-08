@@ -76,7 +76,41 @@ A12（评审）与 A13（合并到 main）各占 0.25 天，整体计划预留 0
 风险与对应应对策略已写入 `docs/03-schedule.md` §6。
 
 ## 4. 配置管理与协作过程
-> 待 04-config-plan.md 责任人补充。
+
+### 4.1 配置项识别
+本组识别出 8 项主要配置项：README、项目启动说明、WBS 文档、简化进度计划、配置管理文档、冲突练习记录、总结报告，以及仓库基础结构（`.gitignore`、`assets/`、`src/`、`test/`）。每项配置项在 `docs/04-config-plan.md` §1 中标注了所有者与基线时机，里程碑完成时由配置管理员打 Tag（计划 Tag：`v0.M1`–`v0.M4`、最终 `v1.0`）。
+
+### 4.2 分支策略
+按照 GitFlow 简化版组织分支：
+
+- `main`：受保护，存放经过评审的最终版本，仅由项目经理在里程碑完成时执行 `--no-ff` 合并。
+- `dev`：阶段集成分支，所有 feature 分支必须先合并到此处。
+- `feature-charter` / `feature-wbs` / `feature-schedule` / `feature-config` / `feature-collab`：分别承接项目章程、WBS、进度计划、配置管理文档、协作完善的开发与编辑。
+- `feature-conflict-zhu` / `feature-conflict-liu`：用于 §5 冲突演练制造冲突场景。
+
+合并方式统一使用 `git merge --no-ff` 保留分支轨迹，便于事后追溯里程碑节奏。
+
+### 4.3 协作过程
+协作过程通过四个 feature 分支并行推进：
+
+1. **2026-05-03** 朱默涵在 `main` 上完成仓库初始化（A1）与项目启动说明（A2），并将首版 README 与 `docs/01-project-charter.md` 提交到 `main`。
+2. **2026-05-04** 杜航屹基于 `main` 创建 `dev`，再切出 `feature-config` 完成配置管理文档初版（A5），由配置管理员自合并到 `dev`；同日马振鑫切出 `feature-wbs` 完成三级 WBS（A3），合并到 `dev`。
+3. **2026-05-05** 马振鑫切出 `feature-schedule` 完成简化进度计划（A4），合并到 `dev`。
+4. **2026-05-06** 刘瑞祥切出 `feature-collab` 完善 `docs/conflict.md` 与新增 `CONTRIBUTING.md`（A8），合并到 `dev`。
+5. **2026-05-07** 朱默涵与刘瑞祥分别在 `feature-conflict-zhu`、`feature-conflict-liu` 上修改 `docs/conflict.md` 同一行（A9），由配置管理员先后合并到 `dev`，第二次合并触发冲突并解决（详见 §5）。
+6. **2026-05-08** 全员在 `feature-summary` 上分章节撰写总结报告（A11），由配置管理员合并到 `dev` 并由项目经理合并到 `main`，打 Tag `v1.0`（A13）。
+
+### 4.4 提交人名称约定
+所有成员在仓库内执行 `git config user.name <拼音>`，邮箱使用本人常用邮箱：
+
+| 姓名 | user.name | user.email |
+|---|---|---|
+| 朱默涵 | zhumohan | 478306673@qq.com |
+| 马振鑫 | mazhenxin | Mazhenxin1833@163.com |
+| 杜航屹 | duhangyi | 3307303811@qq.com |
+| 刘瑞祥 | liuruixiang | 1366326417@qq.com |
+
+通过 `git log --format='%h %an %s'` 即可核查每位成员的提交贡献。
 
 ## 5. 冲突解决过程记录
 > 待协作成员补充。
